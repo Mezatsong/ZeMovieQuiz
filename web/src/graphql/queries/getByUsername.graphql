@@ -2,6 +2,8 @@ query GetByUsername($username: String!) {
   getByUsername(username: $username) {
     id
     username
+    firstName
+    lastName
     email
     createdAt
     updatedAt

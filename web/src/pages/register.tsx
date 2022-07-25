@@ -16,7 +16,7 @@ const Register: NextPage<IRegisterProps> = () => {
   return (
     <Wrapper variant="small">
       <Formik
-        initialValues={{ username: "", email: "" }}
+        initialValues={{ username: "", email: "", firstName: "", lastName: "", password: "" }}
         onSubmit={async (values) => {
           const response = await register({ input: values });
           const user = response.data?.register;
@@ -34,10 +34,35 @@ const Register: NextPage<IRegisterProps> = () => {
             />
             <Box mt={4}>
               <InputField
+                name="firstName"
+                placeholder="First name"
+                label="First name"
+                required
+              />
+            </Box>
+            <Box mt={4}>
+              <InputField
+                name="lastName"
+                placeholder="Last name"
+                label="Last name"
+                required
+              />
+            </Box>
+            <Box mt={4}>
+              <InputField
                 name="email"
                 placeholder="email"
                 label="Email"
                 type="email"
+              />
+            </Box>
+            <Box mt={4}>
+              <InputField
+                name="password"
+                placeholder="Password"
+                label="Password"
+                type="password"
+                required
               />
             </Box>
             <Button

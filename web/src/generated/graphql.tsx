@@ -39,13 +39,19 @@ export type User = {
   __typename?: 'User';
   createdAt: Scalars['String'];
   email: Scalars['String'];
+  firstName: Scalars['String'];
   id: Scalars['Int'];
+  lastName: Scalars['String'];
+  password: Scalars['String'];
   updatedAt: Scalars['String'];
   username: Scalars['String'];
 };
 
 export type UserInput = {
   email: Scalars['String'];
+  firstName: Scalars['String'];
+  lastName: Scalars['String'];
+  password: Scalars['String'];
   username: Scalars['String'];
 };
 
@@ -54,14 +60,14 @@ export type RegisterMutationVariables = Exact<{
 }>;
 
 
-export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'User', email: string, username: string, createdAt: string, updatedAt: string } };
+export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'User', email: string, username: string, firstName: string, lastName: string, createdAt: string, updatedAt: string } };
 
 export type GetByUsernameQueryVariables = Exact<{
   username: Scalars['String'];
 }>;
 
 
-export type GetByUsernameQuery = { __typename?: 'Query', getByUsername?: { __typename?: 'User', id: number, username: string, email: string, createdAt: string, updatedAt: string } | null };
+export type GetByUsernameQuery = { __typename?: 'Query', getByUsername?: { __typename?: 'User', id: number, username: string, firstName: string, lastName: string, email: string, createdAt: string, updatedAt: string } | null };
 
 
 export const RegisterDocument = gql`
@@ -69,6 +75,8 @@ export const RegisterDocument = gql`
   register(input: $input) {
     email
     username
+    firstName
+    lastName
     createdAt
     updatedAt
   }
@@ -83,6 +91,8 @@ export const GetByUsernameDocument = gql`
   getByUsername(username: $username) {
     id
     username
+    firstName
+    lastName
     email
     createdAt
     updatedAt
