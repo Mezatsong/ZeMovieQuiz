@@ -11,7 +11,7 @@ const User: NextPage = () => {
   const [{ data, error, fetching }] = useGetByUsernameQuery({
     variables: { username },
   });
-  const email = data?.getByUsername?.email;
+  const user = data?.getByUsername;
 
   if (fetching) {
     return (
@@ -35,7 +35,7 @@ const User: NextPage = () => {
         fontWeight="bold"
         fontSize="5xl"
       >
-        Welcome {email}
+        Welcome {user?.firstName} {user?.lastName}
       </Flex>
     );
   }
