@@ -1,15 +1,29 @@
 import { Arg, Mutation, Query, Resolver } from "type-graphql";
 import { User } from "../entities/User";
-import { UserInput } from "../types";
+import { LoginInput, UserInput } from "../types";
 import crypto from 'crypto';
 
 @Resolver()
 export class userResolver {
+
+  private hashPassword(password: string): string {
+    const hash = crypto.createHash("sha256");
+    const hashedPassword = hash.update(password).digest('hex');
+    return hashedPassword;
+  }
+
   @Mutation(() => User)
   async register(@Arg("input") input: UserInput): Promise<User | undefined> {
     const { password } = input;
-    const hashedPassword = crypto.createHash('sha256').update(password).digest('hex');
+    const hashedPassword = this.hashPassword(password);
     return User.create({...input, password: hashedPassword}).save();
+  }
+
+  @Mutation(() => User, { nullable: true })
+  async login(@Arg("input") input: LoginInput): Promise<User | undefined> {
+    const { username, password } = input;
+    const hashedPassword = this.hashPassword(password);
+    return User.findOne({ where: { username, password: hashedPassword } });
   }
 
   @Query(() => User, { nullable: true })
