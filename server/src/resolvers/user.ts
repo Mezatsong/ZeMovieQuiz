@@ -4,12 +4,11 @@ import { LoginInput, UserInput } from "../types";
 import crypto from 'crypto';
 
 @Resolver()
-export class userResolver {
+export class UserResolver {
 
   private hashPassword(password: string): string {
     const hash = crypto.createHash("sha256");
-    const hashedPassword = hash.update(password).digest('hex');
-    return hashedPassword;
+    return hash.update(password).digest('hex');
   }
 
   @Mutation(() => User)
