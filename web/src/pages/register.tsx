@@ -1,32 +1,40 @@
 import { NextPage } from "next";
 import { Formik, Form } from "formik";
 import { Wrapper } from "../components/Wrapper";
-import { Box, Button } from "@chakra-ui/react";
+import { Box, Button, Text } from "@chakra-ui/react";
 import { InputField } from "../components/InputField";
 import { withUrqlClient } from "next-urql";
 import { createUrqlClient } from "../utils/createUrqlClient";
 import { useRegisterMutation } from "../generated/graphql";
 import { useRouter } from "next/router";
+import { useState } from "react";
 
 interface IRegisterProps {}
 
 const Register: NextPage<IRegisterProps> = () => {
   const router = useRouter();
+  const [error, setError] = useState('');
   const [, register] = useRegisterMutation();
   return (
     <Wrapper variant="small">
+      <Text mb="5" fontSize="large">Register</Text>
       <Formik
         initialValues={{ username: "", email: "", firstName: "", lastName: "", password: "" }}
         onSubmit={async (values) => {
+          setError('');
           const response = await register({ input: values });
           const user = response.data?.register;
           if (user) {
             router.push(`user/${user.username}`);
           }
+          if (response.error) {
+            setError('Oops.. something went wrong, may be your internet connexion.');
+          }
         }}
       >
         {({ isSubmitting }) => (
           <Form>
+            <Text ml={2} fontSize="sm" color="red">{error}</Text>
             <InputField
               name="username"
               placeholder="username"
