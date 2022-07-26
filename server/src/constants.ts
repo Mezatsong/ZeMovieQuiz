@@ -13,4 +13,5 @@ export default {
   studio_apollo_graphql_url: process.env.STUDIO_APOLLO_GRAPHQL_URL || "",
   dbConnectionRetries: process.env.DB_CONNECTION_RETRIES || 5,
   timeoutBeforeRetry: process.env.TIMEOUT_BEFORE_RETRY || 5000,
+  themoviedb_apiKey: process.env.THEMOVIEDB_API_KEY || ""
 };
