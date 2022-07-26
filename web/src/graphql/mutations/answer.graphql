@@ -1,0 +1,6 @@
+mutation Answer($input: AnswerInput!) {
+  answer(input: $input) {
+    hash
+    isCorrect
+  }
+}

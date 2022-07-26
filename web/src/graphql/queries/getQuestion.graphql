@@ -1,0 +1,16 @@
+query getQuestion {
+  getQuestion {
+    hash
+    movie {
+      id
+      poster_url
+      title
+      overview
+    }
+    actor {
+      id
+      name
+      profile_url
+    }
+  }
+}
