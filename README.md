@@ -64,6 +64,8 @@ BACK_END_URL=http://localhost:4000/
 FRONT_END_URL=http://localhost:3000
 # sudio Apollo graphql URL
 STUDIO_APOLLO_GRAPHQL_URL=https://studio.apollographql.com
+# moviedb api key
+THEMOVIEDB_API_KEY=
 ```
 
 - create `.env.database` file and add the following variables (adapt to your environment).
