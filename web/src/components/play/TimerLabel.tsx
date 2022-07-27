@@ -6,18 +6,25 @@ interface ITimeLabelProps {
   onTimeOver: () => void
 }
 
+let timeout: NodeJS.Timeout;
+
 export const TimerLabel: FC<ITimeLabelProps> = (props) => {
 
   const [remainingSeconds, setRemainingSeconds] = useState(props.timeInSeconds);
 
   useEffect(() => {
     passTime(remainingSeconds+1);
+    return () => {
+      if (timeout) {
+        clearTimeout(timeout);
+      }
+    }
   }, []);
 
   const passTime = (sec: number) => {
     if (sec > 0) {
       setRemainingSeconds(sec - 1);
-      setTimeout(() => passTime(sec-1), 1000);
+      timeout = setTimeout(() => passTime(sec-1), 1000);
     } else {
       props.onTimeOver();
     }
