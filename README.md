@@ -1,4 +1,4 @@
-# typescript-fullstack-starter
+# ZeMovieQuiz - on top of typescript-fullstack-starter
 
 A typescript fullstack starter with all modern tools for coding quickly and softly
 
