@@ -48,17 +48,17 @@ export class MovieQuizResolver {
 			} while (choosedMovieActors.findIndex(e => e.id === actor.id) !== -1);
 		}
 
-		// At this point, we have all we need
-		return {
-			hash,
-			actor,
-			isInCast,
-			movie: choosedMovie
-		} as Question;
+		// Finally, save question and return it
+		const question = await Question.create({ hash, isInCast }).save();
+
+		question.actor = actor;
+		question.movie = choosedMovie;
+
+		return question;
   }
 
 
-  @Mutation(() => Answer)
+  @Mutation(() => Answer, { nullable: true })
   async answer(@Arg("input") input: AnswerInput): Promise<Answer | undefined> {
     const { hash, isInCast } = input;
 		let answer: Answer | undefined;

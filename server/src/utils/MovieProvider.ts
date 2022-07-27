@@ -6,7 +6,9 @@ const THEMOVIEDB_API_BASE_URI = "https://api.themoviedb.org/3";
 
 const movieApiUrl = (path: string): string => `${THEMOVIEDB_API_BASE_URI}${path}?api_key=${config.themoviedb_apiKey}`;
 
-const movieImageUrl = (path: string): string => `https://image.tmdb.org/t/p/w500${path}`;
+const movieImageUrl = (path: string): string => path 
+	? `https://image.tmdb.org/t/p/w500${path}` 
+	: 'https://via.placeholder.com/500x750';
 
 export abstract class MovieProvider {
 
