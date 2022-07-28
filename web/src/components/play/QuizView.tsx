@@ -72,12 +72,12 @@ export const QuizView: FC<IProps> = props => {
       <Box mb={4} minH={250} mx="auto" display="flex" justifyContent="center">
         <Box display="flex" mr={10} flexDirection="column" alignItems="center">
           <Text my={2} fontWeight="bold">The actor</Text>
-          <Image style={{width: 200}} src={question?.actor.profile_url} />
+          <Image style={{width: 200}} src={question?.actor.profile_url} alt="The actor" />
           <Text mt={2}>{question?.actor.name}</Text>
         </Box>
         <Box display="flex" flexDirection="column" alignItems="center">
           <Text my={2} fontWeight="bold">The movie</Text>
-          <Image style={{width: 200}} src={question?.movie.poster_url} />
+          <Image style={{width: 200}} src={question?.movie.poster_url} alt="The movie" />
           <Text mt={2}>{question?.movie.title}</Text>
         </Box>
       </Box>
