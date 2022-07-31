@@ -1,16 +1,45 @@
 import { InputType, Field, ObjectType, ID } from "type-graphql";
+import { IsEmail, MinLength } from "class-validator";
+import { User } from "./entities/User";
+import { Request, Response } from "express";
+
+@ObjectType()
+export class FieldError {
+  @Field()
+  field: string;
+
+  @Field()
+  message: string;
+}
+
+@ObjectType()
+export class RegisterResponse {
+  @Field(() => [FieldError], { nullable: true})
+  errors?: FieldError[]
+
+  @Field(() =>User, { nullable: true})
+  user?: User
+}
 
 @InputType()
 export class UserInput {
+
   @Field(() => String)
+  @MinLength(2)
   username!: string;
+
   @Field(() => String)
   firstName!: string;
+
   @Field(() => String)
   lastName!: string;
+
   @Field(() => String)
+  @IsEmail()
   email!: string;
+
   @Field(() => String)
+  @MinLength(6)
   password!: string;
 }
 
@@ -65,4 +94,17 @@ export class Answer {
 
   @Field()
   isCorrect: boolean;
+}
+
+
+@ObjectType()
+export class LoginResponse {
+  @Field()
+  accessToken: string;
+}
+
+export interface MyContext {
+  req: Request;
+  res: Response;
+  payload?: { userId: number };
 }
