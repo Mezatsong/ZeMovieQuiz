@@ -1,44 +1,59 @@
 import { NextPage } from "next";
-import { Formik, Form } from "formik";
+import { Formik, Form, FormikConfig, FormikHelpers, FormikErrors } from "formik";
 import { Wrapper } from "../components/Wrapper";
 import { Box, Button, Text } from "@chakra-ui/react";
 import { InputField } from "../components/InputField";
 import { withUrqlClient } from "next-urql";
 import { createUrqlClient } from "../utils/createUrqlClient";
-import { useRegisterMutation } from "../generated/graphql";
+import { useRegisterMutation, UserInput } from "../generated/graphql";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
 interface IRegisterProps {}
 
+type OnSubmit = (values: UserInput, formikHelpers: FormikHelpers<UserInput>) => void | Promise<any>;
+
 const Register: NextPage<IRegisterProps> = () => {
   const router = useRouter();
   const [error, setError] = useState('');
   const [, register] = useRegisterMutation();
+
+  const onSubmit: OnSubmit = async (values, formikHelpers) => {
+    setError('');
+    
+    const response = await register({ input: values });
+    const errors = response.data?.register.errors;
+    if (errors && errors.length) {
+      formikHelpers.setErrors(
+        errors.reduce<FormikErrors<UserInput>>((o, e) => ({ ...o, [e.field]: e.message}), {})
+      );
+      setError('There are inputs error in your form');
+    } else {
+      const user = response.data?.register.user;
+      if (user) {
+        router.push(`user/${user.username}`);
+      }
+      if (response.error) {
+        setError('Oops.. something went wrong, may be your internet connexion.');
+      }
+    }
+  }
+
   return (
     <Wrapper variant="small">
       <Text mb="5" fontSize="large">Register</Text>
       <Formik
         initialValues={{ username: "", email: "", firstName: "", lastName: "", password: "" }}
-        onSubmit={async (values) => {
-          setError('');
-          const response = await register({ input: values });
-          const user = response.data?.register;
-          if (user) {
-            router.push(`user/${user.username}`);
-          }
-          if (response.error) {
-            setError('Oops.. something went wrong, may be your internet connexion.');
-          }
-        }}
+        onSubmit={onSubmit}
       >
         {({ isSubmitting }) => (
           <Form>
-            <Text ml={2} fontSize="sm" color="red">{error}</Text>
+            <Text ml={2} mb={10} fontSize="lg" color="red">{error}</Text>
             <InputField
               name="username"
               placeholder="username"
               label="Username"
+              
             />
             <Box mt={4}>
               <InputField

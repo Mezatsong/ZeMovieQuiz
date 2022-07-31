@@ -55,7 +55,7 @@ export class UserResolver {
     };
   }
 
-  @Mutation(() => LoginResponse, { nullable: true })
+  @Mutation(() => LoginResponse)
   async login(@Arg("input") input: LoginInput): Promise<LoginResponse> {
     const { username, password } = input;
     const hashedPassword = this.hashPassword(password);
@@ -66,6 +66,7 @@ export class UserResolver {
     }
 
     return {
+      user,
       accessToken: signToken({ userId: user.id })
     }
   }

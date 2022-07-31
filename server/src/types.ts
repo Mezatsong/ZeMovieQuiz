@@ -99,6 +99,9 @@ export class Answer {
 
 @ObjectType()
 export class LoginResponse {
+  @Field(() => User)
+  user: User;
+
   @Field()
   accessToken: string;
 }

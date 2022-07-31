@@ -1,43 +1,44 @@
 import { NextPage } from "next";
-import { Formik, Form } from "formik";
+import { Formik, Form, FormikHelpers } from "formik";
 import { Wrapper } from "../components/Wrapper";
 import { Box, Button, Text } from "@chakra-ui/react";
 import { InputField } from "../components/InputField";
 import { withUrqlClient } from "next-urql";
 import { createUrqlClient } from "../utils/createUrqlClient";
-import { useLoginMutation } from "../generated/graphql";
+import { LoginInput, useLoginMutation } from "../generated/graphql";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
 interface ILoginProps {}
 
+type OnSubmit = (values: LoginInput, formikHelpers: FormikHelpers<LoginInput>) => void | Promise<any>;
+
 const Login: NextPage<ILoginProps> = () => {
   const router = useRouter();
   const [error, setError] = useState('');
   const [, login] = useLoginMutation();
+
+  const onSubmit: OnSubmit = async (values) => {
+    setError('');
+    const response = await login({ input: values });
+    const user = response.data?.login.user;
+    if (user) {
+      router.push(`user/${user.username}`);
+    } else {
+      setError('Incorrect username or password !');
+    }
+  }
+  
   return (
     <Wrapper variant="small">
       <Text mb="5" fontSize="large">Login</Text>
       <Formik
         initialValues={{ username: "", password: "" }}
-        onSubmit={async (values) => {
-          setError('');
-          const response = await login({ input: values });
-          if (response.error) {
-            setError('Oops.. something went wrong, may be your internet connexion.');
-          } else {
-            const user = response.data?.login;
-            if (user) {
-              router.push(`user/${user.username}`);
-            } else {
-              setError('Incorrect username or password !');
-            }
-          }
-        }}
+        onSubmit={onSubmit}
       >
         {({ isSubmitting }) => (
           <Form>
-            <Text ml={2} fontSize="sm" color="red">{error}</Text>
+            <Text ml={2} mb={10} fontSize="lg" color="red">{error}</Text>
             <Box mt={4}>
               <InputField
                 name="username"

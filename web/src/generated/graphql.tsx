@@ -33,9 +33,21 @@ export type AnswerInput = {
   isInCast: Scalars['Boolean'];
 };
 
+export type FieldError = {
+  __typename?: 'FieldError';
+  field: Scalars['String'];
+  message: Scalars['String'];
+};
+
 export type LoginInput = {
   password: Scalars['String'];
   username: Scalars['String'];
+};
+
+export type LoginResponse = {
+  __typename?: 'LoginResponse';
+  accessToken: Scalars['String'];
+  user: User;
 };
 
 export type Movie = {
@@ -48,9 +60,9 @@ export type Movie = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  answer: Answer;
-  login?: Maybe<User>;
-  register: User;
+  answer?: Maybe<Answer>;
+  login: LoginResponse;
+  register: RegisterResponse;
 };
 
 
@@ -72,6 +84,7 @@ export type Query = {
   __typename?: 'Query';
   getByUsername?: Maybe<User>;
   getQuestion: Question;
+  me?: Maybe<User>;
 };
 
 
@@ -86,6 +99,12 @@ export type Question = {
   movie: Movie;
 };
 
+export type RegisterResponse = {
+  __typename?: 'RegisterResponse';
+  errors?: Maybe<Array<FieldError>>;
+  user?: Maybe<User>;
+};
+
 export type User = {
   __typename?: 'User';
   createdAt: Scalars['String'];
@@ -93,7 +112,6 @@ export type User = {
   firstName: Scalars['String'];
   id: Scalars['Int'];
   lastName: Scalars['String'];
-  password: Scalars['String'];
   updatedAt: Scalars['String'];
   username: Scalars['String'];
 };
@@ -111,21 +129,21 @@ export type AnswerMutationVariables = Exact<{
 }>;
 
 
-export type AnswerMutation = { __typename?: 'Mutation', answer: { __typename?: 'Answer', hash: string, isCorrect: boolean } };
+export type AnswerMutation = { __typename?: 'Mutation', answer?: { __typename?: 'Answer', hash: string, isCorrect: boolean } | null };
 
 export type LoginMutationVariables = Exact<{
   input: LoginInput;
 }>;
 
 
-export type LoginMutation = { __typename?: 'Mutation', login?: { __typename?: 'User', email: string, username: string, firstName: string, lastName: string, createdAt: string, updatedAt: string } | null };
+export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'LoginResponse', accessToken: string, user: { __typename?: 'User', id: number, username: string, firstName: string, lastName: string, email: string, createdAt: string, updatedAt: string } } };
 
 export type RegisterMutationVariables = Exact<{
   input: UserInput;
 }>;
 
 
-export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'User', email: string, username: string, firstName: string, lastName: string, createdAt: string, updatedAt: string } };
+export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'RegisterResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, user?: { __typename?: 'User', id: number, username: string, firstName: string, lastName: string, email: string, createdAt: string, updatedAt: string } | null } };
 
 export type GetByUsernameQueryVariables = Exact<{
   username: Scalars['String'];
@@ -155,12 +173,16 @@ export function useAnswerMutation() {
 export const LoginDocument = gql`
     mutation Login($input: LoginInput!) {
   login(input: $input) {
-    email
-    username
-    firstName
-    lastName
-    createdAt
-    updatedAt
+    user {
+      id
+      username
+      firstName
+      lastName
+      email
+      createdAt
+      updatedAt
+    }
+    accessToken
   }
 }
     `;
@@ -171,12 +193,19 @@ export function useLoginMutation() {
 export const RegisterDocument = gql`
     mutation Register($input: UserInput!) {
   register(input: $input) {
-    email
-    username
-    firstName
-    lastName
-    createdAt
-    updatedAt
+    errors {
+      field
+      message
+    }
+    user {
+      id
+      username
+      firstName
+      lastName
+      email
+      createdAt
+      updatedAt
+    }
   }
 }
     `;

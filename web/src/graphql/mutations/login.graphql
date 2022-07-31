@@ -1,10 +1,14 @@
 mutation Login($input: LoginInput!) {
   login(input: $input) {
-    email
-    username
-    firstName
-    lastName
-    createdAt
-    updatedAt
+    user {
+      id
+      username
+      firstName
+      lastName
+      email
+      createdAt
+      updatedAt
+    }
+    accessToken
   }
 }
