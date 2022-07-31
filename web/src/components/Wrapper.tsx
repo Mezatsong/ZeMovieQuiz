@@ -19,7 +19,7 @@ export const Wrapper: FC<IWrapperProps> = ({
       justifyContent:"center", 
       minHeight:"70vh"
     }
-    ParentBox = ({children}) => <Box {...props}>{children}</Box>;
+    ParentBox = ({children: chld}) => <Box {...props}>{chld}</Box>;
   }
 
   return (

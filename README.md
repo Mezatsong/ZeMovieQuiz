@@ -66,6 +66,8 @@ FRONT_END_URL=http://localhost:3000
 STUDIO_APOLLO_GRAPHQL_URL=https://studio.apollographql.com
 # moviedb api key
 THEMOVIEDB_API_KEY=
+# swcret to encrypt user tokens
+AUTH_TOKEN_SECRET=
 ```
 
 - create `.env.database` file and add the following variables (adapt to your environment).
