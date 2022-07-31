@@ -1,5 +1,5 @@
 import { NextPage } from "next";
-import { Formik, Form, FormikConfig, FormikHelpers, FormikErrors } from "formik";
+import { Formik, Form, FormikHelpers, FormikErrors } from "formik";
 import { Wrapper } from "../components/Wrapper";
 import { Box, Button, Text } from "@chakra-ui/react";
 import { InputField } from "../components/InputField";

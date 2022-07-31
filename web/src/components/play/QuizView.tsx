@@ -49,7 +49,7 @@ export const QuizView: FC<IProps> = props => {
 
     setLoadingType(undefined);
 
-    if (res.data?.answer.isCorrect) {
+    if (res.data?.answer?.isCorrect) {
       setScore(score + 1);
       fetchQuestion();
     } else {
