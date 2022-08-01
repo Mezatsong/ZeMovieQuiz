@@ -35,3 +35,5 @@ export const Wrapper: FC<IWrapperProps> = ({
     </ParentBox>
   );
 };
+
+Wrapper.displayName = 'Wrapper';

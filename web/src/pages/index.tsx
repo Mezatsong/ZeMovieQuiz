@@ -1,7 +1,6 @@
 import type { NextPage } from "next";
 import NextLink from "next/link";
 import Head from "next/head";
-import Image from "next/image";
 import { Flex, Text, Link, Code, Heading, Box } from "@chakra-ui/react";
 
 const Home: NextPage = () => {
@@ -126,7 +125,7 @@ const Home: NextPage = () => {
                 User page &rarr;
               </Heading>
               <Text mt="4" size="xl">
-                Hit "/user/[username]" in the navigator
+                Hit &quot;/user/[username]&ldquo; in the navigator
               </Text>
             </Link>
           </NextLink>
@@ -142,7 +141,7 @@ const Home: NextPage = () => {
         className="border-t"
       >
         <NextLink
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
+          href="mailto:meztsacar@gmail.com"
           passHref
         >
           <Link rel="noopener noreferrer" isExternal>

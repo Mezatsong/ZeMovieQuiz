@@ -1,4 +1,4 @@
-import { MiddlewareFn, UnauthorizedError } from "type-graphql";
+import { MiddlewareFn } from "type-graphql";
 import { verify, sign } from "jsonwebtoken";
 import { MyContext } from "../types";
 import config from "../constants";
