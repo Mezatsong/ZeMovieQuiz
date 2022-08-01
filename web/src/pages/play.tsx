@@ -6,6 +6,7 @@ import { createUrqlClient } from "../utils/createUrqlClient";
 import { useEffect, useState } from "react";
 import { TimerLabel } from "../components/play/TimerLabel";
 import { QuizView } from "../components/play/QuizView";
+import { logout, withAuthSync } from '../utils/auth';
 
 const GAME_PART_TIME_IN_SECONDS = 60;
 const HISCORE_LOCAL_KEY = 'Play@hiscore';
@@ -48,14 +49,19 @@ const Play: NextPage<IPlayProps> = () => {
       setHiScore(savedHiScore);
     }
   }
-  
+
+  const onLogout = () => {
+    logout();
+  }
+
   if (error) {
     return (
       <Wrapper center variant="small">
         <Text my={10} fontSize="3xl" color="red" textAlign="center">Sorry, an error occur ☹️</Text>
-        <Text mb={10} fontSize="large" textAlign="center">Error message: {error}</Text>
+        <Text mb={10} fontSize="large" textAlign="center">Error message: {error?.replace('[GraphQL]', '')}</Text>
         <Box mx="auto" display="flex" alignItems="center" justifyContent="center" width="60%">
           <Button colorScheme="blue" width="lg" onClick={() => location.reload()}>Try again</Button>
+          <Button ml={10} colorScheme="red" width="lg" onClick={onLogout}>Logout</Button>
         </Box>
       </Wrapper>
     );
@@ -69,6 +75,7 @@ const Play: NextPage<IPlayProps> = () => {
           {hiScore ? <Text my={4} textAlign="center" fontSize="large">Highscore: {hiScore}</Text> : <></>}
           <Box mx="auto" display="flex" alignItems="center" justifyContent="center" width="60%">
             <Button colorScheme="blue" width="lg" onClick={startGame}>Play</Button>
+            <Button ml={10} colorScheme="red" width="lg" onClick={onLogout}>Logout</Button>
           </Box>
         </Box>
       </Wrapper>
@@ -82,6 +89,7 @@ const Play: NextPage<IPlayProps> = () => {
         <Text mb={10} fontSize="large" textAlign="center">Highscore: {hiScore}</Text>
         <Box mx="auto" display="flex" alignItems="center" justifyContent="center" width="60%">
           <Button colorScheme="blue" width="lg" onClick={startGame}>Replay</Button>
+          <Button ml={10} colorScheme="red" width="lg" onClick={onLogout}>Logout</Button>
         </Box>
       </Wrapper>
     );
@@ -108,4 +116,4 @@ const Play: NextPage<IPlayProps> = () => {
   );
 };
 
-export default withUrqlClient(createUrqlClient, { ssr: false })(Play);
+export default withUrqlClient(createUrqlClient, { ssr: false })(withAuthSync(Play));

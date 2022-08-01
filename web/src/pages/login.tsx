@@ -8,6 +8,7 @@ import { createUrqlClient } from "../utils/createUrqlClient";
 import { LoginInput, useLoginMutation } from "../generated/graphql";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { saveToken } from "../utils/auth";
 
 interface ILoginProps {}
 
@@ -21,6 +22,12 @@ const Login: NextPage<ILoginProps> = () => {
   const onSubmit: OnSubmit = async (values) => {
     setError('');
     const response = await login({ input: values });
+
+    const accessToken = response.data?.login.accessToken;
+    if (accessToken) {
+      saveToken(accessToken);
+    }
+
     const user = response.data?.login.user;
     if (user) {
       router.push(`user/${user.username}`);
