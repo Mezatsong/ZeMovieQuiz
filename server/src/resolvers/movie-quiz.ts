@@ -1,8 +1,9 @@
 import { MovieProvider } from "../utils/MovieProvider";
-import { Arg, Mutation, Query, Resolver } from "type-graphql";
+import { Arg, Mutation, Query, Resolver, UseMiddleware } from "type-graphql";
 import { Question } from "../entities/Question";
 import { AnswerInput, Actor, Answer } from "../types";
 import crypto from 'crypto';
+import { isAuth } from "../utils/isAuth";
 
 // min and max included
 const randomIntFromInterval = (min: number, max: number): number => { 
@@ -13,6 +14,7 @@ const randomIntFromInterval = (min: number, max: number): number => {
 export class MovieQuizResolver {
 
   @Query(() => Question)
+	@UseMiddleware(isAuth)
   async getQuestion(): Promise<Question> {
     // 1- Let's generate a unique question hash
 		const hashObj = crypto.createHash("sha256");
@@ -59,6 +61,7 @@ export class MovieQuizResolver {
 
 
   @Mutation(() => Answer, { nullable: true })
+	@UseMiddleware(isAuth)
   async answer(@Arg("input") input: AnswerInput): Promise<Answer | undefined> {
     const { hash, isInCast } = input;
 		let answer: Answer | undefined;
